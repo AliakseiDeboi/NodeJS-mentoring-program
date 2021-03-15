@@ -3,7 +3,6 @@ import fs from 'fs';
 import { pipeline } from 'stream';
 
 const fileLocation = __dirname + '\\data.csv';
-console.log(csvReader.csv())
 
 /**
  * We will use pipeline method to avoid loading
