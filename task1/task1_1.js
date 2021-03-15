@@ -1,4 +1,4 @@
-const process = require('process');
+import process from 'process';
 
 /**
  * This function reverses a string. It converts string to array,
@@ -9,8 +9,7 @@ const process = require('process');
  * @return reversed {string}
  */
 const reverseString = str => {
-    return Array.from(str)
-        .filter(char => char !== '\r' && char !== '\n')
+    return Array.from(str.trim())
         .reverse()
         .join('');
 }
