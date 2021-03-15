@@ -10,7 +10,10 @@ const fileLocation = __dirname + '\\data.csv';
  */
 pipeline(
     fs.createReadStream(fileLocation),
-    csvReader.csv({delimiter: ';'}).preFileLine((fileLine,idx)=> {
+    csvReader.csv({
+        delimiter: ';',
+        ignoreColumns: /amount/
+    }).preFileLine((fileLine,idx)=> {
         if (idx === 0 ) {
             return fileLine.toLowerCase();
         }
