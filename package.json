@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/app.ts",
-    "build": "tsc -p .",
     "task1": "nodemon task1/task1_1.js --exec babel-node --presets babel-preset-env",
     "task2": "nodemon task1/task1_2.js --exec babel-node --presets babel-preset-env"
   },
