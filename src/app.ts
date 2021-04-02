@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 
-import { Application, NextFunction, Request, Response } from 'express';
+import { Application, Request, Response } from 'express';
 import { routerUsers } from './api/users';
 import * as bodyParser from 'body-parser';
 
@@ -14,9 +14,12 @@ const app: Application = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/users', routerUsers);
-app.use((req: Request, res: Response, next: NextFunction) => {
-    const error = new Error('Not found');
-    next(error);
+app.use((req: Request, res: Response) => {
+    res.status(400).json({
+        error: {
+            message: 'Not found'
+        }
+    });
 });
 app.use((err: Error, req: Request, res: Response) => {
     res.status(404);

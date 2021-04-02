@@ -76,8 +76,8 @@ export class UserService {
      * This method describes logic of getting user by login
      * @param loginSubstring is string
      */
-    public findUsersByLogin(loginSubstring: string): Array<UserI> {
-        return this.getAllUsers().filter((user: UserI) => user.login.includes(loginSubstring))
+    public getAutoSuggestUsers(loginSubstring: string): Array<UserI> {
+        return this.getAllUsers().filter((user: UserI) => user.login.toLowerCase().includes(loginSubstring));
     }
 
     /**
