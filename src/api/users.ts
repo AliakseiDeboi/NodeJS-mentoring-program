@@ -3,30 +3,13 @@ import { Request, Response, Router } from 'express';
 import { createValidator } from 'express-joi-validation';
 import { UserService } from '../services/user.service';
 import { UserI } from '../models/user/interface';
+import { forbiddenId, userExists, userNotExist } from '../constants/user.constants';
 import { createUserSchema, getUsersQuerySchema, updateUserSchema } from '../models/user/schema';
 
 export const routerUsers: Router = express.Router();
 
 const validator = createValidator();
 const userService: UserService = new UserService();
-
-const forbiddenId = {
-    error: {
-        message: 'You can not update ID'
-    }
-};
-
-const userNotExist = {
-    error: {
-        message: 'User does not exist'
-    }
-};
-
-const userExists = {
-    error: {
-        message: 'User is already exists'
-    }
-};
 
 /**
  * GET HTTP request. First param describes url path, second param is validator,
