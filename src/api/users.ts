@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import { Request, Response, Router } from 'express';
 import { createValidator } from 'express-joi-validation';
 import { UserService } from '../services/user.service';
@@ -8,7 +8,7 @@ import { createUserSchema, getUsersQuerySchema, updateUserSchema } from '../mode
 
 export const routerUsers: Router = express.Router();
 
-const validator = createValidator();
+const validator = createValidator({ passError: true });
 const userService: UserService = new UserService();
 
 /**
@@ -87,8 +87,22 @@ routerUsers.delete('/:userId', (req: Request, res: Response) => {
 
     if (user) {
         userService.deleteUser(user);
-        res.status(200).json();
+        res.status(204).json();
     } else {
         res.status(400).json(userNotExist);
+    }
+});
+
+/**
+ * This is express validation
+ */
+routerUsers.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err && err.error && err.error.isJoi) {
+        res.status(400).json({
+            type: err.type,
+            message: err.error.toString()
+        });
+    } else {
+        return next(err);
     }
 });
