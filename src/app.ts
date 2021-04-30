@@ -7,6 +7,10 @@ import * as bodyParser from 'body-parser';
 
 import { sequelize } from './data-access/database.connection';
 import { User } from './models/user.model-definition';
+import { routerGroups } from './controllers/groups.controller';
+import { Group } from './models/group.model-definition';
+import { UserGroup } from './models/user-group.model-definition';
+
 
 const port = process.env.PORT || 3000;
 const app: Application = express();
@@ -17,6 +21,7 @@ const app: Application = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use('/users', routerUsers);
+app.use('/groups', routerGroups);
 app.use((req: Request, res: Response) => {
     res.status(400).json({
         error: {
@@ -35,5 +40,9 @@ app.use((err: Error, req: Request, res: Response) => {
 
 sequelize.authenticate().then(() => {
     User.sync().then();
+    Group.sync().then();
+    UserGroup.sync().then();
+    User.belongsToMany(Group, { through: UserGroup, foreignKey: 'userId' });
+    Group.belongsToMany(User, { through: UserGroup, foreignKey: 'groupId' });
     app.listen(port, () => console.log(`server is running on port ${port}`));
 }).catch(err => console.log(err));

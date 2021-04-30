@@ -1,26 +1,25 @@
+"use strict";
 /**
  * This file contains constants for users
  */
-
-export const forbiddenId = {
+exports.__esModule = true;
+exports.requiredFields = exports.userExists = exports.userNotExist = exports.forbiddenId = void 0;
+exports.forbiddenId = {
     error: {
         message: 'You can not update ID'
     }
 };
-
-export const userNotExist = {
+exports.userNotExist = {
     error: {
         message: 'User does not exist'
     }
 };
-
-export const userExists = {
+exports.userExists = {
     error: {
         message: 'User is already exists'
     }
 };
-
-export const requiredFields = {
+exports.requiredFields = {
     error: {
         message: 'Please, update fields'
     }

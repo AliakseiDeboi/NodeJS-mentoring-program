@@ -1,10 +1,11 @@
 import { sequelize } from '../data-access/database.connection';
 import { User } from '../models/user.model-definition';
+import { UserCreationAttributes } from '../types/user.interface';
 
 /**
  * Default data for PG
  */
-const defaultData =  [
+const defaultData: Array<UserCreationAttributes> =  [
     {
         'id': 0,
         'login': 'Nagibator123',
