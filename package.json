@@ -8,6 +8,7 @@
     "task1": "nodemon task1/task1_1.js --exec babel-node --presets babel-preset-env",
     "task2": "nodemon task1/task1_2.js --exec babel-node --presets babel-preset-env",
     "populateUsers": "ts-node src/scripts/populate-users.ts",
+    "populateGroups": "ts-node src/scripts/populate-groups.ts",
     "build": "tsc -p ."
   },
   "repository": {

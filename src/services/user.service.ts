@@ -1,9 +1,11 @@
 import { Op } from 'sequelize';
 import { User } from '../models/user.model-definition';
 import { UserAttributes, UserCreationAttributes, UserInstance } from '../types/user.interface';
+import { Group } from '../models/group.model-definition';
+
 /**
  * This class describes User Service and contains operations that
- * can be applied to users and also contains mocked data
+ * can be applied to users
  */
 export class UserService {
 
@@ -62,5 +64,15 @@ export class UserService {
      */
     public async deleteUser(id: string): Promise<void> {
         await User.update({isDeleted: true}, {where: {id}});
+    }
+
+    public async getUserWithGroup(id: string): Promise<any> {
+        return User.findByPk(id, {
+            include: {
+                model: Group,
+                attributes: ['id', 'name', 'permissions'],
+                through: { attributes: [] }
+            }
+        })
     }
 }

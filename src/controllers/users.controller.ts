@@ -3,7 +3,7 @@ import { createValidator } from 'express-joi-validation';
 import { UserService } from '../services/user.service';
 import { UserInstance } from '../types/user.interface';
 import { forbiddenId, requiredFields, userExists, userNotExist } from '../constants/user.constants';
-import { getUsersQuerySchema } from '../models/user.query-schema';
+import { getUsersQuerySchema } from '../validators/user.query-schema';
 
 export const routerUsers: Router = express.Router();
 
@@ -75,7 +75,6 @@ routerUsers.put('/:userId',  async (req: Request, res: Response) => {
     } else if (flag) {
         res.status(400).json(userNotExist);
     } else {
-        console.log(flag);
         res.status(400).json(forbiddenId);
     }
 });
@@ -94,4 +93,12 @@ routerUsers.delete('/:userId', async (req: Request, res: Response) => {
     } else {
         res.status(400).json(userNotExist);
     }
+});
+
+/**
+ * GET method for getting certain group for certain user
+ */
+routerUsers.get('/:userId/with-group', async (req: Request, res: Response) => {
+    const data = await userService.getUserWithGroup(req.params.userId);
+    res.status(200).json(data);
 });
