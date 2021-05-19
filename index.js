@@ -1,1 +1,3 @@
-console.log("Works")
+import { Logger } from './src/config';
+
+Logger.info('Works');

@@ -2,7 +2,7 @@ import express, { Request, Response, Router } from 'express';
 import { createValidator } from 'express-joi-validation';
 import { UserService } from '../services/user.service';
 import { UserInstance } from '../types/user.interface';
-import { forbiddenId, requiredFields, userExists, userNotExist } from '../constants/user.constants';
+import { forbiddenId, userExists, userNotExist } from '../constants/user.constants';
 import { getUsersQuerySchema } from '../validators/user.query-schema';
 
 export const routerUsers: Router = express.Router();
@@ -30,17 +30,12 @@ routerUsers.get('/', validator.query(getUsersQuerySchema), async (req: Request, 
  * second param - callback function, that allow us to add users
  */
 routerUsers.post('/', async (req: Request, res: Response) => {
-    try {
-        const login = await userService.getAutoSuggestUsers(req.body.login.toLowerCase());
-        if (!login.length) {
-            const data = await userService.addUser(req.body);
-            res.status(200).json(data);
-        } else {
-            res.status(400).json(userExists);
-        }
-    } catch (UnhandledPromiseRejectionWarning) {
-        res.status(400).json(requiredFields);
-        console.log(UnhandledPromiseRejectionWarning);
+    const login = await userService.getAutoSuggestUsers(req.body.login.toLowerCase());
+    if (!login.length) {
+        const data = await userService.addUser(req.body);
+        res.status(200).json(data);
+    } else {
+        res.status(400).json(userExists);
     }
 });
 
