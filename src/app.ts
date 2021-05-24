@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction, response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import { routerUsers } from './controllers/users.controller';
 import * as bodyParser from 'body-parser';
 
@@ -21,11 +21,17 @@ app.use(morganMiddleware);
 app.use(bodyParser.json());
 app.use('/users', routerUsers);
 app.use('/groups', routerGroups);
-app.use((req: Request, res: Response) => {
+
+// eslint-disable-next-line no-unused-vars
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    Logger.error(
+        `Method: ${req.method} / Arguments: ${JSON.stringify(req.query)} / Error: ${
+            err.message
+        }`,
+    );
     res.status(500).json({
-        error: {
-            message: 'Not found'
-        }
+        message: err.message,
+        stack: err.stack
     });
 });
 
