@@ -1,6 +1,7 @@
 import { sequelize } from '../data-access/database.connection';
 import { Group } from '../models/group.model-definition';
 import { GroupCreationAttributes } from '../types/group.interface';
+import { Logger } from '../config';
 
 /**
  * Default data for PG
@@ -26,5 +27,5 @@ const populateGroups = async () => {
 };
 
 populateGroups().then(() => {
-    console.info('Table with groups was created and populated');
-}).catch(err => console.log(err));
+    Logger.info('Table with groups was created and populated');
+}).catch(err => Logger.error(err));

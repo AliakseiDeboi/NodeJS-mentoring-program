@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from 'express';
 import { GroupsService } from '../services/group.service';
+import asyncHandler from 'express-async-handler';
 import { GroupInstance } from '../types/group.interface';
 import { createValidator } from 'express-joi-validation';
 import { forbiddenId, groupNotExist, requiredFields, userWasAdded } from '../constants/group.constants';
@@ -13,51 +14,51 @@ const groupsService: GroupsService = new GroupsService();
 /**
  * GET method for groups
  */
-routerGroups.get('/', async (req: Request, res: Response) => {
+routerGroups.get('/', asyncHandler(async (req: Request, res: Response) => {
     const data: GroupInstance[] = await groupsService.getAllGroups();
     res.status(200).json(data);
-});
+}));
 
 /**
  * GET method for certain groupID
  */
-routerGroups.get('/:groupId', async (req: Request, res: Response) => {
+routerGroups.get('/:groupId', asyncHandler(async (req: Request, res: Response) => {
     const data = await groupsService.getGroupById(req.params.groupId);
     if (data) {
         res.status(200).json(data);
     } else {
         res.status(400).json(requiredFields);
     }
-});
+}));
 
 /**
  * POST method for groups
  */
-routerGroups.post('/', async (req: Request, res: Response) => {
+routerGroups.post('/', asyncHandler(async (req: Request, res: Response) => {
     const data = await groupsService.addGroup(req.body);
     if (data) {
         res.status(200).json(data);
     } else {
         res.status(400).json(requiredFields);
     }
-});
+}));
 
 /**
  * POST method for adding users to group
  */
-routerGroups.post('/:groupId/add-users', validator.body(addUsersToGroupBodySchema), async (req: Request, res: Response) => {
+routerGroups.post('/:groupId/add-users', validator.body(addUsersToGroupBodySchema), asyncHandler(async (req: Request, res: Response) => {
     if (req.params.groupId && req.body.userIds) {
         await groupsService.addUsersToGroup(parseInt(req.params.groupId, 10), req.body.userIds);
         res.status(200).json(userWasAdded);
     } else {
         res.status(400).json(requiredFields);
     }
-});
+}));
 
 /**
  * PUT method for updating group
  */
-routerGroups.put('/:groupId', async (req: Request, res: Response) => {
+routerGroups.put('/:groupId', asyncHandler(async (req: Request, res: Response) => {
     const targetGroup = await groupsService.getGroupById(req.params.groupId);
     const flag = (req.body.id === targetGroup?.id) || (!req.body.id);
 
@@ -71,12 +72,12 @@ routerGroups.put('/:groupId', async (req: Request, res: Response) => {
     } else {
         res.status(400).json(forbiddenId);
     }
-});
+}));
 
 /**
  * DELETE method for deleting certain group
  */
-routerGroups.delete('/:groupId', async (req: Request, res: Response) => {
+routerGroups.delete('/:groupId', asyncHandler(async (req: Request, res: Response) => {
     const targetGroup = await groupsService.getGroupById(req.params.groupId);
 
     if (targetGroup) {
@@ -86,4 +87,4 @@ routerGroups.delete('/:groupId', async (req: Request, res: Response) => {
     } else {
         res.status(400).json(groupNotExist);
     }
-});
+}));

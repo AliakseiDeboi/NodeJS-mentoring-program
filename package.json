@@ -47,7 +47,9 @@
     "babel-preset-env": "1.7.0",
     "babel-eslint": "10.1.0",
     "eslint": "7.23.0",
-    "nodemon": "2.0.7"
+    "nodemon": "2.0.7",
+    "winston": "3.3.3",
+    "express-async-handler": "1.1.4"
   },
   "dependencies": {
     "csvtojson": "2.0.10",

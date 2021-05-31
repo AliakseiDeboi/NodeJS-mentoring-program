@@ -2,6 +2,8 @@ import { sequelize } from '../data-access/database.connection';
 import { User } from '../models/user.model-definition';
 import { UserCreationAttributes } from '../types/user.interface';
 
+import { Logger } from '../config';
+
 /**
  * Default data for PG
  */
@@ -60,5 +62,5 @@ const populateUsers = async () => {
 };
 
 populateUsers().then(() => {
-    console.info('Table with users was created and populated');
-}).catch(err => console.log(err));
+    Logger.info('Table with users was created and populated');
+}).catch(err => Logger.error(err));
