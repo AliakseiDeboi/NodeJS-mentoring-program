@@ -75,4 +75,8 @@ export class UserService {
             }
         })
     }
+
+    public async login(username: string, password: string): Promise<UserInstance | null> {
+        return User.findOne({where: {login: username, password: password}});
+    }
 }

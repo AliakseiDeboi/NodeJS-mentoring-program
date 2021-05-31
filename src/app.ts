@@ -7,7 +7,9 @@ import { User } from './models/user.model-definition';
 import { routerGroups } from './controllers/groups.controller';
 import { Group } from './models/group.model-definition';
 import { UserGroup } from './models/user-group.model-definition';
-
+import { checkAccessToken } from './tokens';
+import { routerAuth } from './controllers/auth.controller';
+import cors from 'cors';
 
 import { Logger, morganMiddleware } from './config';
 
@@ -19,8 +21,11 @@ const app: Application = express();
  */
 app.use(morganMiddleware);
 app.use(bodyParser.json());
-app.use('/users', routerUsers);
-app.use('/groups', routerGroups);
+app.use(cors());
+
+app.use('', routerAuth);
+app.use('/users', checkAccessToken, routerUsers);
+app.use('/groups', checkAccessToken, routerGroups);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
