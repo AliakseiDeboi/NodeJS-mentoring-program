@@ -14,6 +14,11 @@ export const generateRefreshToken = (payload: UserTokenPayload) => {
 
 export const checkAccessToken = (req: Request, res: Response) => {
     const token: any = req.headers['x-access-token'];
+
+    // Bearer:
+    //
+    // const authHeader: any = req.headers.authorization;
+    // const token = authHeader && authHeader.split(' ')[1];
     if (token) {
         jwt.verify(token, ACCESS_TOKEN_SECRET, (err: VerifyErrors | null) => {
             if (err) {
@@ -28,6 +33,11 @@ export const checkAccessToken = (req: Request, res: Response) => {
 
 export const checkRefreshToken = (req: Request, res: Response) => {
     const token: any = req.headers['x-refresh-token'];
+
+    // Bearer:
+    //
+    // const authHeader: any = req.headers.authorization;
+    // const token = authHeader && authHeader.split(' ')[1];
     if (token) {
         jwt.verify(token, REFRESH_TOKEN_SECRET, (err: VerifyErrors | null, payload: any) => {
             if (err) {

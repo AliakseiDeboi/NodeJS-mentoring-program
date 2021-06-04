@@ -2,6 +2,8 @@ import { Op } from 'sequelize';
 import { User } from '../models/user.model-definition';
 import { UserAttributes, UserCreationAttributes, UserInstance } from '../types/user.interface';
 import { Group } from '../models/group.model-definition';
+import { UserTokenPayload } from "../types/user-token-payload.interface";
+import { generateAccessToken, generateRefreshToken } from "../tokens";
 
 /**
  * This class describes User Service and contains operations that
@@ -76,7 +78,22 @@ export class UserService {
         })
     }
 
-    public async login(username: string, password: string): Promise<UserInstance | null> {
-        return User.findOne({where: {login: username, password: password}});
+    login = async (username: string, password: string) => {
+        const user = await User.findOne({where: {login: username, password: password}});
+
+        if (user) {
+            const payload: UserTokenPayload = {
+                id: user.id,
+                login: user.login,
+            }
+
+            return {
+                'access-token': generateAccessToken(payload),
+                'refresh-token': generateRefreshToken(payload),
+            };
+        }
+
+        return null;
+
     }
 }

@@ -1,32 +1,39 @@
-import express, { NextFunction, Request, Response, Router } from 'express';
+import express, { Request, Response, Router } from 'express';
 import { createValidator } from 'express-joi-validation';
+import asyncHandler from 'express-async-handler';
 import { UserService } from '../services/user.service';
 import { checkRefreshToken, generateAccessToken, generateRefreshToken } from '../tokens';
 import { authBodySchema } from '../validators/auth.schema';
-import { UserInstance } from '../types/user.interface';
 
 export const routerAuth: Router = express.Router();
 
 const validator = createValidator();
 const userService: UserService = new UserService();
 
-const generateBody = (user: UserInstance) => {
-    return {
-        'access-token': generateAccessToken({ id: user.id, login: user.login }),
-        'refresh-token': generateRefreshToken({ id: user.id, login: user.login })
-    };
-};
+routerAuth.post('/auth', validator.body(authBodySchema), asyncHandler(async (req: Request, res: Response) => {
+    try {
+        const user = await userService.login(req.body.login, req.body.password);
 
-routerAuth.post('/auth', validator.body(authBodySchema), async (req: Request, res: Response, next: NextFunction) => {
-    const user = await userService.login(req.body.login, req.body.password);
-    if (user) {
-        res.status(200).json(generateBody(user));
-    } else {
-        res.status(403).json({ status: 'failed', errors: 'Incorrect login or password' });
+        if (user) {
+            return res.status(200).json(user);
+        }
+
+        return res.status(403).json({
+            message: 'Access forbidden',
+            error: 'Incorrect credentials'
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: 'Something is wrong',
+            error: err.message
+        });
     }
-});
+}));
 
-routerAuth.post('/refresh-token', checkRefreshToken, async (req: Request, res: Response, next: NextFunction) => {
+routerAuth.post('/refresh-token', checkRefreshToken, asyncHandler(async (req: Request, res: Response) => {
     const user = res.locals.payload;
-    res.status(200).json(generateBody(user));
-});
+    res.status(200).json({
+        'access-token': generateAccessToken(user),
+        'refresh-token': generateRefreshToken(user)
+    });
+}));
