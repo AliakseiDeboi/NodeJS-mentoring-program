@@ -9,44 +9,38 @@ import { Logger } from '../config';
  */
 const defaultData: Array<UserCreationAttributes> =  [
     {
-        'id': 0,
         'login': 'Nagibator123',
-        'password': 'password',
+        'password': 'Password123',
         'age': 34,
         'isDeleted': false
     },
     {
-        'id': 1,
         'login': 'Crushitel',
-        'password': 'password',
+        'password': 'Password123',
         'age': 21,
         'isDeleted': false
     },
     {
-        'id': 2,
         'login': 'Iriska',
-        'password': 'password',
+        'password': 'Password123',
         'age': 66,
         'isDeleted': false
     },
     {
-        'id': 3,
         'login': 'Liliana',
-        'password': 'password',
+        'password': 'Password123',
         'age': 21,
         'isDeleted': false
     },
     {
-        'id': 4,
         'login': 'AAAAAAAA1235',
-        'password': 'password',
+        'password': 'Password123',
         'age': 29,
         'isDeleted': false
     },
     {
-        'id': 5,
         'login': 'MacBook12',
-        'password': 'password',
+        'password': 'Password123',
         'age': 16,
         'isDeleted': false
     }
