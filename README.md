@@ -1,2 +1,2 @@
 # NodeJS-mentoring-program
-This repository contains tasks on NodeJS mentoring program in EPAM Systems
+This repository contains tasks from NodeJS mentoring program in EPAM Systems
